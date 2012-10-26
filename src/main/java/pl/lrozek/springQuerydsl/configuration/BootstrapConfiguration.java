@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
+import com.googlecode.flyway.core.Flyway;
+
 @PropertySource("classpath:/application.props")
 @Configuration
 public class BootstrapConfiguration {
@@ -16,6 +18,13 @@ public class BootstrapConfiguration {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(initMethod = "migrate")
+    public Flyway flyway() {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource( h2() );
+        return flyway;
     }
 
     @Bean(destroyMethod = "close")
