@@ -10,6 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.googlecode.flyway.core.Flyway;
+import com.mysema.query.sql.H2Templates;
+import com.mysema.query.sql.SQLTemplates;
 
 @PropertySource("classpath:/application.props")
 @Configuration
@@ -34,6 +36,11 @@ public class BootstrapConfiguration {
         dataSource.setUrl( url );
         dataSource.setUsername( username );
         return dataSource;
+    }
+
+    @Bean
+    public SQLTemplates sqlTemplates() {
+        return new H2Templates();
     }
 
     @Value("${jdbc.driver}")
